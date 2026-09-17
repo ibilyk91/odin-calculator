@@ -29,7 +29,7 @@ function operate(num1, num2, operator){
     }
 }
 
-const display = document.getElementsByClassName("display");
+const display = document.querySelector(".display");
 const buttons = document.querySelector(".buttons");
 
 function update_display(input){
@@ -37,6 +37,9 @@ function update_display(input){
 }
 
 let input = '0';
+let num1 = null;
+let operator = null;
+let waiting = false; // waits for second value
 
 buttons.addEventListener("click", function(event){
     const target = event.target; // store button clicked, target = <button class="btn_number" data-value="7">7</button>
@@ -45,8 +48,43 @@ buttons.addEventListener("click", function(event){
         return; // ignore click which was not on a button
     }
 
-    // if number button {}
+    if (target.classList.contains("btn_number")){ // if a btn_number clicked
+        const value = target.dataset.value; // store data-value content into value
 
-    // if operator button {}
+        if (waiting){
+            input = value;
+            waiting = false; // when finished writing number
+        }
+        else{ // numbers with two or more digits
+            input = (input === '0') ? value : input + value; // if condition true assign value, if not append value to input.
+        }
+        update_display(input);
+    }
+
+    else if (target.classList.contains("btn_operator")){ // if a btn_action clicked
+        const action = target.dataset.action; // store data-action content into action
+
+        if (action === "AC"){ // clear
+            input = '0';
+            num1 = null;
+            operator = null;
+            waiting = false;
+            update_display(input);
+        }
+        else if (action === '='){
+            if (operator && num1 !== null){
+                const num2 = Number.parseFloat(input); // convert string to number
+                input = String(operate(num1, num2, operator));
+                num1 = null;
+                operator = null;
+                waiting = true;
+                update_display(input);
+            }
+        }
+        else{ // for '+', '-', '*', '/'
+            num1 = Number.parseFloat(input);
+            operator = action;
+            waiting = true;
+        }
+    }
 });
-
