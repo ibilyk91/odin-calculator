@@ -10,7 +10,10 @@ function multiply(num1, num2){
     return num1 * num2;
 }
 
-function divide(num1, num2){ // complete 0 division
+function divide(num1, num2){
+    if (num2 === 0){
+        return null;
+    }
     return num1 / num2;
 }
 
@@ -30,6 +33,10 @@ function operate(num1, num2, operator){
 }
 
 function round(result){ // round long decimals to 8 decimal places
+    if (result === null){ // for zero division
+        return null;
+    }
+
     return Math.round(result * 100000000) / 100000000;
 }
 
@@ -37,7 +44,11 @@ const display = document.querySelector(".display");
 const buttons = document.querySelector(".buttons");
 
 function update_display(input){
-    display.textContent = input;
+    if (input === null){ // for zero division
+        display.textContent = "Error";
+        return;
+    }
+    display.textContent = String(input);
 }
 
 const MAX_DIGITS = 10;
@@ -100,7 +111,7 @@ buttons.addEventListener("click", function(event){
                 const num2 = Number.parseFloat(input); // convert string to number
                 const result = operate(num1, num2, operator);
 
-                input = String(round(result));
+                input = round(result);
                 num1 = null;
                 operator = null;
                 waiting = true;
@@ -113,8 +124,8 @@ buttons.addEventListener("click", function(event){
             if ((num1 !== null) && operator && !waiting){
                 const result = operate(num1, num2, operator); // calculate and save raw value
                 num1 = result; // store number in "memory"
-                
-                input = String(round(result)); 
+
+                input = round(result);
                 update_display(input);
             }
             else{
