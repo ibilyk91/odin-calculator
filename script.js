@@ -52,12 +52,26 @@ buttons.addEventListener("click", function(event){
         const value = target.dataset.value; // store data-value content into value
 
         if (waiting){
-            input = value;
+            if (value === '.'){ // make input "0." if waiting for a new number and user clicks '.'
+                input = "0.";
+            }
+            else{
+                input = value;
+            }
             waiting = false; // when finished writing number
         }
-        else{ // numbers with two or more digits
-            input = (input === '0') ? value : input + value; // if condition true assign value, if not append value to input.
-        }
+        else{
+            if (value === '.' && input.includes('.')){ // ignore click if it is a '.' and it already exists in input
+                return;
+            }
+
+            if (input === '0' && value === '.'){ // if 0 and user types '.' change input to "0."
+                input = "0.";
+            }
+            else{ // numbers with two or more digits
+                input = (input === '0') ? value : input + value; // if condition true assign value, if not append value to input.
+            }
+        }    
         update_display(input);
     }
 
