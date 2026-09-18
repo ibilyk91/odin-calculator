@@ -29,12 +29,18 @@ function operate(num1, num2, operator){
     }
 }
 
+function round(result){ // round long decimals to 8 decimal places
+    return Math.round(result * 100000000) / 100000000;
+}
+
 const display = document.querySelector(".display");
 const buttons = document.querySelector(".buttons");
 
 function update_display(input){
     display.textContent = input;
 }
+
+const MAX_DIGITS = 10;
 
 let input = '0';
 let num1 = null;
@@ -65,6 +71,10 @@ buttons.addEventListener("click", function(event){
                 return;
             }
 
+            if (input.replace('.', '').length >= MAX_DIGITS){ // delete any '.' and check if input length is >= MAX_DIGITS if so stop new numbers
+                return;
+            }
+
             if (input === '0' && value === '.'){ // if 0 and user types '.' change input to "0."
                 input = "0.";
             }
@@ -88,7 +98,9 @@ buttons.addEventListener("click", function(event){
         else if (action === '='){
             if (operator && num1 !== null){
                 const num2 = Number.parseFloat(input); // convert string to number
-                input = String(operate(num1, num2, operator));
+                const result = operate(num1, num2, operator);
+
+                input = String(round(result));
                 num1 = null;
                 operator = null;
                 waiting = true;
@@ -101,7 +113,8 @@ buttons.addEventListener("click", function(event){
             if ((num1 !== null) && operator && !waiting){
                 const result = operate(num1, num2, operator); // calculate and save raw value
                 num1 = result; // store number in "memory"
-                input = String(result); 
+                
+                input = String(round(result)); 
                 update_display(input);
             }
             else{
