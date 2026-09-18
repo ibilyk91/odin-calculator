@@ -82,7 +82,17 @@ buttons.addEventListener("click", function(event){
             }
         }
         else{ // for '+', '-', '*', '/'
-            num1 = Number.parseFloat(input);
+            const num2 = Number.parseFloat(input);
+
+            if ((num1 !== null) && operator && !waiting){
+                const result = operate(num1, num2, operator); // calculate and save raw value
+                num1 = result; // store number in "memory"
+                input = String(result); 
+                update_display(input);
+            }
+            else{
+                num1 = num2;
+            }
             operator = action;
             waiting = true;
         }
