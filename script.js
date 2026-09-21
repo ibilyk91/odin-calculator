@@ -148,3 +148,44 @@ buttons.addEventListener("click", function(event){
         }
     }
 });
+
+// adds keyboard support
+document.addEventListener("keydown", function(event){
+    const key = event.key;
+    
+    if ((key >= '0' && key <= '9') || key === '.'){
+        // find the matching button in DOM and trigger a click event
+        const button = document.querySelector(`.btn_number[data-value="${key}"]`);
+        if (button){
+            button.click();
+        }
+    }
+    else if (key === '+' || key === '-' || key === '*' || key === '/'){
+        if (key === '/'){
+            event.preventDefault(); // prevent browser default behavior for '/'
+        }
+        const button = document.querySelector(`.btn_operator[data-action="${key}"]`);
+        if (button){
+            button.click();
+        }
+    }
+    else if (key === "Enter" || key === '='){
+        event.preventDefault(); // prevent browser default behavior for ENTER
+        const button = document.querySelector(".btn_operator[data-action='=']");
+        if (button){
+            button.click();
+        }
+    }
+    else if (key === "Backspace"){
+        const button = document.querySelector('.btn_operator[data-action="DEL"]');
+        if (button){
+            button.click();
+        }
+    }
+    else if (key === "Escape"){
+        const button = document.querySelector('.btn_operator[data-action="AC"]');
+        if (button){
+            button.click();
+        }
+    }
+});
