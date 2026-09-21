@@ -36,7 +36,6 @@ function round(result){ // round long decimals to 8 decimal places
     if (result === null){ // for zero division
         return null;
     }
-
     return Math.round(result * 100000000) / 100000000;
 }
 
@@ -104,6 +103,19 @@ buttons.addEventListener("click", function(event){
             num1 = null;
             operator = null;
             waiting = false;
+            update_display(input);
+        }
+        else if (action === "DEL"){
+            if (waiting){ // if waiting for an input (right after operator or equals)
+                return; // ignore
+            }
+
+            if (input.length > 1){
+                input = input.slice(0, -1); // remove last character
+            }
+            else{
+                input = '0'; // reset to 0 if one digit is left to avoid empty display
+            }
             update_display(input);
         }
         else if (action === '='){
