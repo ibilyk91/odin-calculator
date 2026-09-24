@@ -32,11 +32,11 @@ function operate(num1, num2, operator){
     }
 }
 
-function round(result){ // round long decimals to 8 decimal places
+function round(result){ // round long decimals to 10 decimal places
     if (result === null){ // for zero division
         return null;
     }
-    return Math.round(result * 100000000) / 100000000;
+    return Math.round(result * 10000000000) / 10000000000;
 }
 
 const display = document.querySelector(".display");
@@ -50,7 +50,7 @@ function update_display(input){
     display.textContent = String(input);
 }
 
-const MAX_DIGITS = 10;
+const MAX_DIGITS = 17;
 
 let input = '0';
 let num1 = null;
